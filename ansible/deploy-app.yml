@@ -1,0 +1,29 @@
+---
+- name: Deploy Flask App with Docker
+  hosts: web
+  become: yes
+  tasks:
+    - name: Create app directory on EC2
+      file:
+        path: /home/ubuntu/college-app
+        state: directory
+
+    - name: Copy app files to EC2
+      copy:
+        src: ../docker/
+        dest: /home/ubuntu/college-app/
+        mode: 0755
+
+    - name: Build Docker image
+      command: docker build -t college-form /home/ubuntu/college-app
+
+    - name: Run Docker container
+      command: docker run -d -p 80:80 --name college-form-app college-form
+      ignore_errors: yes
+
+    - name: Remove existing container (if running)
+      command: docker rm -f college-form-app
+      ignore_errors: yes
+
+    - name: Run Docker container again
+      command: docker run -d -p 80:80 --name college-form-app college-form
