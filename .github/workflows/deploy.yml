@@ -15,7 +15,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
+          python-version: "3.9"
 
       - name: Install Ansible
         run: |
@@ -28,7 +28,10 @@ jobs:
           echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/collegeRegKey.pem
           chmod 400 ~/.ssh/collegeRegKey.pem
 
+      - name: Add EC2 to known_hosts
+        run: |
+          ssh-keyscan -H 18.201.42.31 >> ~/.ssh/known_hosts
+
       - name: Run Ansible Playbook
         run: |
           ansible-playbook -i ansible/hosts.ini ansible/deploy-app.yml
-
