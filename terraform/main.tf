@@ -90,7 +90,7 @@ resource "aws_instance" "web" {
   subnet_id                   = aws_subnet.main.id
   vpc_security_group_ids      = [aws_security_group.allow_ssh_http.id]
   associate_public_ip_address = true
-  key_name                    = "collegeRegKey"
+  key_name                    = "my-ansible-key"
 
   tags = {
     Name    = "CollegeRegServer"
